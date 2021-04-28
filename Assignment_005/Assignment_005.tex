@@ -1,0 +1,119 @@
+%
+% @author   Shmish  "shmish90@gmail.com"
+% @legal    MIT     "(c) Christopher Schmitt"
+%
+
+
+\documentclass{article}
+
+
+%
+% Document Imports
+%
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{tikz}
+
+
+
+%
+% Document Configuration
+%
+
+\newcommand{\hwAuthor}{Christopher K. Schmitt}
+\newcommand{\hwSubject}{CS 492}
+\newcommand{\hwSection}{Section 70}
+\newcommand{\hwSemester}{Spring 2020}
+\newcommand{\hwAssignment}{Assignment 5}
+
+
+%
+% Document Environments
+%
+
+\setlength{\headheight}{65pt}
+\pagestyle{fancy}
+\lhead{\hwAuthor}
+\rhead{
+  \hwSubject \\
+  \hwSection \\
+  \hwSemester \\
+  \hwAssignment
+}
+
+\newenvironment{problem}[1]{
+  \nobreak\section*{Problem #1}
+}{}
+
+
+%
+% Document Start
+%
+
+\begin{document}
+  \begin{problem}{1}
+    In theory, you would need at least $12$ characters to secure the
+    key.  We can find this with the information entropy formula:
+    \begin{center}
+      \begin{displaymath}
+        H = \log_2 N^L
+      \end{displaymath}
+    \end{center}
+    Where $H$ is entropy, $N$ is the number of bits provided per
+    symbol, and $L$ is sequence length.  Solving for $L$:
+    \begin{center}
+      \begin{displaymath}
+        96 = \log_2 256^L \implies L = 12 
+      \end{displaymath}
+    \end{center}
+    This is only a theoretic solution, in practice people do not
+    achieve required entropy because they do not choose characters
+    randomly.  Specific letters and patterns are picked more often
+    than others, a secure password requires truly random choices.
+    Additionally, if using an an encoding scheme like ASCII, some
+    symbols are reserved as control characters and will never show
+    up, further reducing entropy.
+  \end{problem}
+
+  \begin{problem}{2}
+    \begin{itemize}
+      \item Windows Hello + Password, Something you are and something you know
+      \item Online banking text + password, something you have (your phone) and something you know
+      \item Mobile banking fingerprint + password, something you are and something you know
+      \item Token generator + fingerprint reader on a laptop, something you have and something you are
+      \item Apple Face ID + pin, something you are and something you know
+    \end{itemize}
+  \end{problem}
+
+  \begin{problem}{3}
+    DMZs enable an organization to create a ``perimeter" around their
+    LAN.  All incoming and outgoing network traffic passes though
+    this layer, while intra-network communication is unhindered.
+    This enables the network administrators to provide security while
+    keeping internal communications speedy.  It also enables security
+    systems to focus their recourses on just the traffic passing
+    through this layer.
+  \end{problem}
+
+  \begin{problem}{4}
+    Pros of Signature Detection:
+    \begin{itemize}
+      \item Signature based detection systems can be expanded easily by extending the signature database
+      \item Signature based systems are very good at stopping known threats
+      \item Has a lower false positive rate that anomaly detection
+    \end{itemize}
+    \noindent
+    Pros of Anomaly Detection
+    \begin{itemize}
+      \item Unlike signature detection, anomaly can prevent unknown attacks
+      \item Can be tuned to new applications easily
+    \end{itemize}
+    A3 and A0 are outside of the threshold, this is anomalous behavior.
+  \end{problem}
+\end{document}

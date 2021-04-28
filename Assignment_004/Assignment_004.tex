@@ -1,0 +1,163 @@
+%
+% @author   Shmish  "shmish90@gmail.com"
+% @legal    MIT     "(c) Christopher Schmitt"
+%
+
+
+\documentclass{article}
+
+
+%
+% Document Imports
+%
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{tikz}
+
+
+
+%
+% Document Configuration
+%
+
+\newcommand{\hwAuthor}{Christopher K. Schmitt}
+\newcommand{\hwSubject}{CS 492}
+\newcommand{\hwSection}{Section 70}
+\newcommand{\hwSemester}{Spring 2020}
+\newcommand{\hwAssignment}{Assignment 4}
+
+
+%
+% Document Environments
+%
+
+\setlength{\headheight}{65pt}
+\pagestyle{fancy}
+\lhead{\hwAuthor}
+\rhead{
+  \hwSubject \\
+  \hwSection \\
+  \hwSemester \\
+  \hwAssignment
+}
+
+\newenvironment{problem}[1]{
+  \nobreak\section*{Problem #1}
+}{}
+
+
+%
+% Document Start
+%
+
+\begin{document}
+  \begin{problem}{1}
+    Design a secure mutual authentication protocol based on a shared 
+    symmetric key.  We also want to establish a session key, and we 
+    want perfect forward secrecy.  Solve for a protocol that can 
+    establish this in 2 to 3 messages
+
+    \begin{center}
+      \begin{tikzpicture}
+        \node (Alice) at (0, 1) {Alice, K};
+        \node (Bob) at (7, 1) {Bob, K};
+
+        \draw [->] (1, 2) -- (6, 2) node[midway, above] {``I'm Alice'', $R_{A}$};
+        \draw [<-] (1, 1) -- (6, 1) node[midway, above] {$E(\text{``I'm Bob''}, R_{A}, R_{B}, K)$};
+        \draw [->] (1, 0) -- (6, 0) node[midway, above] {$E(\text{``I'm Alice''}, R_{A}, R_{B}, SK, K)$};
+      \end{tikzpicture}
+    \end{center}
+  \end{problem}
+
+  \begin{problem}{2}
+    Draw the sequence of an attack Trudy can use to convince Bob that 
+    she is Alice.
+
+    \begin{center}
+      \begin{tikzpicture}
+        \node (Trudy) at (-1, 3) {Trudy};
+        \node (Bob) at (6, 3) {Bob};
+
+        \draw [->] (0, 5) -- (5, 5) node[midway, above] {``I'm Alice'', $R + 1$};
+        \draw [<-] (0, 4) -- (5, 4) node[midway, above] {$E(R + 1, K_{AB})$};
+        \draw [->] (0, 3) -- (5, 3) node[midway, above] {``I'm Alice'', $R$};
+        \draw [<-] (0, 2) -- (5, 2) node[midway, above] {$E(R, K_{AB})$};
+        \draw [->] (0, 1) -- (5, 1) node[midway, above] {$E(R + 1, K_{AB})$};
+      \end{tikzpicture}
+    \end{center}
+  \end{problem}
+
+  \begin{problem}{3}
+    Does Alice authenticate Bob?  Justify your answer.
+    \bigbreak
+    Alice is able to authenticate Bob because in order to compute K,
+    we must have S.  S is encrypted by Alice using Bob's public key
+    so only Bob is able to decrypt S and compute K.
+    \bigbreak\noindent
+    Does Bob authenticate Alice?  Justify your answer.
+    \bigbreak
+    No, Bob is unable to authenticate Alice.  There is no operation
+    that Alice is required to perform that only she can compute.
+    Trudy has all the information she needs to imitate Alice since
+    anyone can encrypt S for Bob.  If CLNT is stored securely
+    however, Trudy shouldn't be able to hijack anything specific to
+    Alice maintained by Bob.
+  \end{problem}
+
+  \begin{problem}{4}
+    Suppose that nonces RA and RB are removed from the protocol and 
+    K=h(S).  What effect if any does that have on the security of the
+    protocol?
+    \bigbreak
+    Removing the nonces in this protocol leaves the communication
+    vulnerable to replay attacks.  Without the nonces, the first
+    three messages are identical between instances.
+    \bigbreak\noindent
+    Suppose we change message 4 to HMAC(msgs, SRVR, K).  What effect, 
+    if any, does this have on the security of the authentication 
+    protocol?
+    \bigbreak
+    Replacing the hash with the HMAC would let Alice know if some third
+    party has tampered with the messages, since computing the HMAC
+    requires knowing the key.
+    \bigbreak\noindent
+    Suppose that we change message three to $\{S\}_{Bob}$, h(msgs, CLNT, 
+    K)  What effect, if any, does this have on the security of the 
+    authentication protocol?
+    \bigbreak
+    This should have no effect on the security of the protocol.  A
+    hash is a one way function, so no information can be extracted
+    from it.  Bob can still verify it by computing the hash himself
+    and comparing it.
+  \end{problem}
+
+  \begin{problem}{5}
+    Why can Alice not remain anonymous when requesting a TGT from the
+    KDC?
+    \bigbreak
+    Alice must be authenticated, and her identity is contained in the
+    TGT, so she can't remain anonymous.
+    \bigbreak\noindent
+    Why can Alice remain anonymous in the sense of not needing to use 
+    her private key when requesting a ticket to Bob (what does she 
+    use instead and why is this sufficient)?
+    \bigbreak
+    Alice has her TGT, which contains her identity behind a key known
+    only to the KCD.
+    \bigbreak\noindent
+    Why can Alice remain anonymous (not needing her private key) when 
+    she sends the ``ticket to Bob'' to Bob?
+    \bigbreak
+    The ticket to bob is issued by the KCD, which used Alice's TGT to
+    authenticate her.  If Bob trusts the KCD, he can trust the ticket
+    to bob without needing to authenticate the person on the other
+    end because the KCD has already done that.
+
+  \end{problem}
+\end{document}

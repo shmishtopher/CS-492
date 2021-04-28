@@ -1,0 +1,170 @@
+%
+% @author   Shmish  "shmish90@gmail.com"
+% @legal    MIT     "(c) Christopher Schmitt"
+%
+
+
+\documentclass{article}
+
+
+%
+% Document Imports
+%
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{tikz}
+
+
+
+%
+% Document Configuation
+%
+
+\newcommand{\hwAuthor}{Christopher K. Schmitt}
+\newcommand{\hwSubject}{CS 492}
+\newcommand{\hwSection}{Section 70}
+\newcommand{\hwSemester}{Spring 2020}
+\newcommand{\hwAssignment}{Assignment 3}
+
+
+%
+% Document Enviornments
+%
+
+\setlength{\headheight}{65pt}
+\pagestyle{fancy}
+\lhead{\hwAuthor}
+\rhead{
+  \hwSubject \\
+  \hwSection \\
+  \hwSemester \\
+  \hwAssignment
+}
+
+\newenvironment{problem}[1]{
+  \nobreak\section*{Problem #1}
+}{}
+
+
+%
+% Document Start
+%
+
+\begin{document}
+  \begin{problem}{1}
+    Suppose that for the knapsack cryptosystem, the superincreasing 
+    knapsack is $(3, 5, 12, 23)$ with $n=47$ and $m=6$
+    
+    \subsection*{What are the public and private keys?}
+    \begin{center}
+      \begin{equation*}
+        \begin{split}
+          mm^{-1} & \equiv 1 \pmod{n}\\
+          6m^{-1} & \equiv 1 \pmod{47}
+        \end{split}
+      \end{equation*}
+
+      \begin{equation*}
+        \begin{split}
+          47 & = 6(7) + 5\\
+          6 & = 5(1) + 1
+        \end{split}
+      \end{equation*}
+
+      \begin{equation*}
+        \begin{split}
+          5 & = 47 - 6(7)\\
+          1 & = 6 - 5(1)
+        \end{split}
+      \end{equation*}
+
+      \begin{equation*}
+        \begin{split}
+          1 & = 6 - (47 - 6(7))(1)\\
+          1 & = 6 - (47 - 6(7))\\
+          1 & = 47(1) - 6(6)
+        \end{split}
+      \end{equation*}
+    \end{center}
+    Private key: $6$\\
+    Public key: $(18, 30, 25, 44)$
+
+    \subsection*{Encrypt the message $M = 1101$}
+    \begin{center}
+      \begin{equation*}
+        C = \begin{bmatrix}1\\1\\0\\1\end{bmatrix}\cdot\begin{bmatrix}18\\30\\25\\44\end{bmatrix}=92
+      \end{equation*}
+    \end{center}
+  \end{problem}
+
+  \break
+
+  \begin{problem}{2}
+  Suppose that Alice’s RSA public key is $(N,e) = (33,3)$ and her 
+  private key is $d=7$.
+
+  \subsection*{If Bob encrypts the message $M = 19$, what is the ciphertext?}
+  \begin{center}
+    \begin{equation*}
+      \begin{split}
+        C & \equiv M^{e} \pmod{n}\\
+        28 & \equiv 19^{3} \pmod{33}
+      \end{split}
+    \end{equation*}
+  \end{center}
+
+  \subsection*{Show that Alice can decrypt C to obtain M}
+  \begin{center}
+    \begin{equation*}
+      \begin{split}
+        (m^e)^d & \equiv m \pmod{n}\\
+        C^d & \equiv m \pmod{n}\\
+        28^7 & \equiv 19 \pmod{33}
+      \end{split}
+    \end{equation*}
+  \end{center}
+
+  \subsection*{Let S be the result when Alice signs the message $M=25$. What is S?}
+  \begin{center}
+    \begin{equation*}
+      \begin{split}
+        S & \equiv M^d \pmod{n}\\
+        31 & \equiv 25^7 \pmod{33}
+      \end{split}
+    \end{equation*}
+  \end{center}
+
+  \subsection*{If Bob receives M and S, show how Bob verifies the signature}
+  \begin{center}
+    \begin{equation*}
+      \begin{split}
+        M' & \equiv S^e \pmod{n}\\
+        25 & \equiv 31^3 \pmod{33}\\
+        M & = M'
+      \end{split}
+    \end{equation*}
+  \end{center}
+  \end{problem}
+
+  \break
+
+  \begin{problem}{3}
+    Alice and Bob are making their wills.  For the final will they want to send a 
+    copy to their attorney Charlie that only Charlie can read and that shows both 
+    Alice and Bob have approved it.  Using the notation in the slides (same as 
+    that in the book).  What would be the notation of a message that accomplishes 
+    this task?
+  
+    \begin{center}
+      \begin{math}
+        \{[[M]_a]_b\}_c
+      \end{math}
+    \end{center}
+  \end{problem}
+\end{document}
